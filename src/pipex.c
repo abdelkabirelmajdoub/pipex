@@ -94,7 +94,10 @@ int	main(int ac, char **av, char **env)
 		exit(1);
 	}
 	if (pipe(pipefd) == -1)
-		error(0);
+	{
+		perror("Pipe error");
+		exit(0);
+	}
 	pid = fork();
 	if (pid == 0)
 		child_process(av, pipefd, env);
