@@ -1,107 +1,123 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   pipex_bonus.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ael-majd <ael-majd@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/01/23 12:30:38 by ael-majd          #+#    #+#             */
+/*   Updated: 2025/01/23 12:34:56 by ael-majd         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "pipex_bonus.h"
 
-void exec_cmd(char *cmd, char **env)
+void	exec_cmd(char *cmd, char **env)
 {
-    char **full_cmd;
-    char *path;
+	char	**full_cmd;
+	char	*path;
 
-    full_cmd = ft_split(cmd, ' ');
-    path = get_path(full_cmd[0], env);
-    if (execve(path, full_cmd, env) == -1)
-    {
-        perror("exec error");
-        free_paths(full_cmd);
-        exit(1);
-    }
+	full_cmd = ft_split(cmd, ' ');
+	path = get_path(full_cmd[0], env);
+	if (execve(path, full_cmd, env) == -1)
+	{
+		perror("Unkown command");
+		free_paths(full_cmd);
+		exit(1);
+	}
 }
 
-void child_process(char *cmd, char **env, int input_fd, int output_fd)
+void	child_process(char *cmd, char **env)
 {
-    if (input_fd != STDIN_FILENO)
-    {
-        dup2(input_fd, STDIN_FILENO);
-        close(input_fd);
-    }
-    if (output_fd != STDOUT_FILENO)
-    {
-        dup2(output_fd, STDOUT_FILENO);
-        close(output_fd);
-    }
-    exec_cmd(cmd, env);
+	pid_t	pid;
+	int		fdpipe[2];
+
+	if (pipe(fdpipe) == -1)
+		error(0);
+	pid = fork();
+	if (pid == -1)
+		error(3);
+	if (pid == 0)
+	{
+		close(fdpipe[0]);
+		dup2(fdpipe[1], STDOUT_FILENO);
+		exec_cmd(cmd, env);
+	}
+	else
+	{
+		close(fdpipe[1]);
+		dup2(fdpipe[0], STDIN_FILENO);
+		waitpid(pid, NULL, 0);
+	}
 }
 
-void pipex(int ac, char **av, char **env)
+void	run_here_doc(char *limitter, int *fdpipe)
 {
-    int pipefd[2];
-    int input_fd;
-    int i;
-    pid_t pid;
+	char	*line;
 
-    input_fd = open(av[1], O_RDONLY);
-    if (input_fd == -1)
-    {
-        perror("Input file error");
-        exit(1);
-    }
-
-    for (i = 2; i < ac - 2; i++)
-    {
-        if (pipe(pipefd) == -1)
-        {
-            perror("Pipe error");
-            exit(1);
-        }
-        pid = fork();
-        if (pid == -1)
-        {
-            perror("Fork error");
-            exit(1);
-        }
-        if (pid == 0)
-        {
-            close(pipefd[0]);
-            child_process(av[i], env, input_fd, pipefd[1]);
-        }
-        else
-        {
-            close(pipefd[1]);
-            close(input_fd);
-            input_fd = pipefd[0];
-        }
-    }
-	int output_fd = -1;
-    if(access(av[1],F_OK) == 0)
-    	output_fd = open(av[ac - 1], O_WRONLY | O_CREAT | O_TRUNC, 0644);
-    if (output_fd == -1)
-    {
-        perror("Output file error");
-        exit(1);
-    }
-    pid = fork();
-    if (pid == -1)
-    {
-        perror("Fork error");
-        exit(1);
-    }
-    if (pid == 0)
-    {
-        child_process(av[i], env, input_fd, output_fd);
-    }
-    else
-    {
-        close(input_fd);
-        close(output_fd);
-        waitpid(pid, NULL, 0);
-    }
+	close(fdpipe[0]);
+	while (1)
+	{
+		ft_putstr_fd("here_doc_running>", 1);
+		line = get_next_line(0);
+		if (ft_strncmp(line, limitter, ft_strlen(limitter)) == 0 
+			&& ft_strlen(line) == ft_strlen(limitter) + 1)
+		{
+			free(line);
+			exit(0);
+		}
+		ft_putstr_fd(line, fdpipe[1]);
+		free(line);
+	}
 }
 
-int main(int ac, char **av, char **env)
+void	here_doc(char *limitter)
 {
-    if (ac < 5)
-    {
-        ft_putstr_fd("Bad arguments:\n./pipex infile <cmd1> ... <cmdn> outfile\n", 2);
-        exit(1);
-    }
-    pipex(ac, av, env);
-    return 0;
+	int		fdpipe[2];
+	pid_t	pid;
+
+	if (pipe(fdpipe) == -1)
+		exit(1);
+	pid = fork();
+	if (pid == -1)
+		error(3);
+	if (pid == -1)
+		exit(1);
+	if (pid == 0)
+		run_here_doc(limitter, fdpipe);
+	else
+	{
+		waitpid(pid, NULL, 0);
+		close(fdpipe[1]);
+		dup2(fdpipe[0], STDIN_FILENO);
+		close(fdpipe[0]);
+	}
+}
+
+int	main(int ac, char **av, char **env)
+{
+	int	in;
+	int	out;
+	int	i;
+
+	check_error(ac);
+	if (ft_strncmp(av[1], "here_doc", 8) == 0)
+	{
+		check_error(ac);
+		i = 3;
+		out = open(av[ac - 1], O_RDWR | O_CREAT | O_APPEND, 0777);
+		here_doc(av[2]);
+	}
+	else 
+	{
+		i = 2;
+		in = open(av[1], O_RDONLY);
+		dup2(in, STDIN_FILENO);
+		out = open(av[ac - 1], O_RDWR | O_CREAT | O_TRUNC, 0777);
+	}
+	while (i < ac - 2)
+		child_process(av[i++], env);
+	dup2(out, STDOUT_FILENO);
+	exec_cmd(av[ac - 2], env);
+	return (0);
 }

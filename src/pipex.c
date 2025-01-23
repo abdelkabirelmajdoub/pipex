@@ -6,7 +6,7 @@
 /*   By: ael-majd <ael-majd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/21 16:41:25 by ael-majd          #+#    #+#             */
-/*   Updated: 2025/01/22 13:56:38 by ael-majd         ###   ########.fr       */
+/*   Updated: 2025/01/23 12:13:32 by ael-majd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ void	child_process(char **av, int *pipefd, char **env)
 	int	fd;
 
 	fd = open(av[1], O_RDONLY, 0777);
-	if (fd == -1 )
+	if (fd == -1)
 	{
 		perror("infile error");
 		close(pipefd[1]);
@@ -94,7 +94,7 @@ int	main(int ac, char **av, char **env)
 		exit(1);
 	}
 	if (pipe(pipefd) == -1)
-		exit(1);
+		error(0);
 	pid = fork();
 	if (pid == 0)
 		child_process(av, pipefd, env);

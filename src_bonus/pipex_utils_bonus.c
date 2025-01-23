@@ -6,7 +6,7 @@
 /*   By: ael-majd <ael-majd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/21 11:16:15 by ael-majd          #+#    #+#             */
-/*   Updated: 2025/01/22 09:50:54 by ael-majd         ###   ########.fr       */
+/*   Updated: 2025/01/23 12:31:02 by ael-majd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,4 +67,31 @@ char	*get_path(char *cmd, char **env)
 	}
 	free_paths(secure_paths);
 	return (cmd);
+}
+
+void	error(int n)
+{
+	if (n == 1)
+	{
+		ft_putstr_fd("Bad arguments:\n", 2);
+		ft_putstr_fd("./pipex infile <cmd1> ... <cmdn> outfile\n", 2);
+	}
+	else if (n == 2)
+	{
+		ft_putstr_fd("Bad arguments:\n", 2);
+		ft_putstr_fd("./pipex here_doc LIMITER cmd cmd1 file\n", 2);
+	}
+	else if (n == 3)
+		ft_putstr_fd("fork error", 2);
+	else 
+		perror("Pipe Error");
+	exit(EXIT_FAILURE);
+}
+
+void	check_error(int ac)
+{
+	if (ac < 5)
+		error(1);
+	if (ac < 6)
+		error(2);
 }
