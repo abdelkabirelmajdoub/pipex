@@ -6,7 +6,7 @@
 /*   By: ael-majd <ael-majd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/21 16:28:07 by ael-majd          #+#    #+#             */
-/*   Updated: 2025/01/22 09:59:19 by ael-majd         ###   ########.fr       */
+/*   Updated: 2025/01/25 16:04:54 by ael-majd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@
 # include <unistd.h>
 # include <fcntl.h>
 # include <stdio.h>
-# include <stdlib.h>
 # include "../libft/libft.h"
 
 char	*my_getenv(char *name, char **env);

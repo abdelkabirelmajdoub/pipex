@@ -6,7 +6,7 @@
 /*   By: ael-majd <ael-majd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 12:30:38 by ael-majd          #+#    #+#             */
-/*   Updated: 2025/01/23 12:34:56 by ael-majd         ###   ########.fr       */
+/*   Updated: 2025/01/25 16:00:35 by ael-majd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ void	exec_cmd(char *cmd, char **env)
 	{
 		perror("Unkown command");
 		free_paths(full_cmd);
+		free(path);
 		exit(1);
 	}
 }
@@ -41,12 +42,14 @@ void	child_process(char *cmd, char **env)
 	{
 		close(fdpipe[0]);
 		dup2(fdpipe[1], STDOUT_FILENO);
+		close(fdpipe[1]);
 		exec_cmd(cmd, env);
 	}
 	else
 	{
 		close(fdpipe[1]);
 		dup2(fdpipe[0], STDIN_FILENO);
+		close(fdpipe[0]);
 		waitpid(pid, NULL, 0);
 	}
 }
@@ -100,10 +103,10 @@ int	main(int ac, char **av, char **env)
 	int	out;
 	int	i;
 
-	check_error(ac);
+	check_error(ac, 1);
 	if (ft_strncmp(av[1], "here_doc", 8) == 0)
 	{
-		check_error(ac);
+		check_error(ac, 2);
 		i = 3;
 		out = open(av[ac - 1], O_RDWR | O_CREAT | O_APPEND, 0777);
 		here_doc(av[2]);
@@ -113,11 +116,12 @@ int	main(int ac, char **av, char **env)
 		i = 2;
 		in = open(av[1], O_RDONLY);
 		dup2(in, STDIN_FILENO);
+		close(in);
 		out = open(av[ac - 1], O_RDWR | O_CREAT | O_TRUNC, 0777);
 	}
 	while (i < ac - 2)
 		child_process(av[i++], env);
 	dup2(out, STDOUT_FILENO);
+	close(out);
 	exec_cmd(av[ac - 2], env);
-	return (0);
 }

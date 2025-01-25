@@ -6,7 +6,7 @@
 /*   By: ael-majd <ael-majd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/21 11:16:15 by ael-majd          #+#    #+#             */
-/*   Updated: 2025/01/23 12:31:02 by ael-majd         ###   ########.fr       */
+/*   Updated: 2025/01/23 16:44:26 by ael-majd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,10 +88,10 @@ void	error(int n)
 	exit(EXIT_FAILURE);
 }
 
-void	check_error(int ac)
+void	check_error(int ac, int n)
 {
-	if (ac < 5)
-		error(1);
-	if (ac < 6)
-		error(2);
+	if (ac < 5 && n == 1)
+		error(n);
+	if (ac < 6 && n == 2)
+		error(n);
 }

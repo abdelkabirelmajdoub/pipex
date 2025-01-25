@@ -6,7 +6,7 @@
 /*   By: ael-majd <ael-majd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/21 16:41:25 by ael-majd          #+#    #+#             */
-/*   Updated: 2025/01/23 12:13:32 by ael-majd         ###   ########.fr       */
+/*   Updated: 2025/01/25 15:52:28 by ael-majd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ void	exec_cmd(char *cmd, char **env)
 	{
 		perror("exec error");
 		free_paths(full_cmd);
+		free(path);
 		exit(1);
 	}
 }
@@ -96,7 +97,7 @@ int	main(int ac, char **av, char **env)
 	if (pipe(pipefd) == -1)
 	{
 		perror("Pipe error");
-		exit(0);
+		exit(1);
 	}
 	pid = fork();
 	if (pid == 0)
