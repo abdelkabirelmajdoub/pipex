@@ -1,5 +1,3 @@
-
-```markdown
 # Pipex
 
 ## Table of Contents
