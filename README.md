@@ -1,4 +1,3 @@
-Certainly! Below is the regenerated `README.md` content for easy copy-pasting into your repository. Just copy the text below and paste it into your `README.md` file.
 
 ---
 
