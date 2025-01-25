@@ -172,5 +172,3 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
 Enjoy using `pipex`! If you have any questions, feel free to reach out.
 ```
 
----
-
