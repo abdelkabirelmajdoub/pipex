@@ -3,10 +3,10 @@ CFLAGS = -Wall -Wextra -Werror
 SRC = 	src/pipex.c  src/pipex_utils.c 
 
 SRCB = 	src_bonus/pipex_bonus.c  \
-		src_bonus/pipex_utils_bonus.c 
+	src_bonus/pipex_utils_bonus.c 
 
 GNL = 	src_bonus/GNL/get_next_line_bonus.c \
-		src_bonus/GNL/get_next_line_utils_bonus.c
+	src_bonus/GNL/get_next_line_utils_bonus.c
 
 LIBFT = libft/libft.a
 
