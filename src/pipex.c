@@ -23,7 +23,6 @@ void	exec_cmd(char *cmd, char **env)
 	{
 		perror("exec error");
 		free_paths(full_cmd);
-		free(path);
 		exit(1);
 	}
 }
