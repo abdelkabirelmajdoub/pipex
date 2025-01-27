@@ -6,7 +6,7 @@
 /*   By: ael-majd <ael-majd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 12:30:38 by ael-majd          #+#    #+#             */
-/*   Updated: 2025/01/25 16:00:35 by ael-majd         ###   ########.fr       */
+/*   Updated: 2025/01/27 13:04:51 by ael-majd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,9 @@ void	exec_cmd(char *cmd, char **env)
 	path = get_path(full_cmd[0], env);
 	if (execve(path, full_cmd, env) == -1)
 	{
-		perror("Unkown command");
+		ft_putstr_fd("command not found: ", 2);
+		ft_putstr_fd(full_cmd[0], 2);
+		ft_putstr_fd("\n", 2);
 		free_paths(full_cmd);
 		exit(1);
 	}
@@ -49,7 +51,6 @@ void	child_process(char *cmd, char **env)
 		close(fdpipe[1]);
 		dup2(fdpipe[0], STDIN_FILENO);
 		close(fdpipe[0]);
-		waitpid(pid, NULL, 0);
 	}
 }
 

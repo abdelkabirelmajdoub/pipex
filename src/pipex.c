@@ -6,7 +6,7 @@
 /*   By: ael-majd <ael-majd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/21 16:41:25 by ael-majd          #+#    #+#             */
-/*   Updated: 2025/01/25 15:52:28 by ael-majd         ###   ########.fr       */
+/*   Updated: 2025/01/27 12:49:39 by ael-majd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,9 @@ void	exec_cmd(char *cmd, char **env)
 	path = get_path(full_cmd[0], env);
 	if (execve(path, full_cmd, env) == -1)
 	{
-		perror("exec error");
+		ft_putstr_fd("command not found: ", 2);
+		ft_putstr_fd(full_cmd[0], 2);
+		ft_putstr_fd("\n", 2);
 		free_paths(full_cmd);
 		exit(1);
 	}
@@ -107,5 +109,4 @@ int	main(int ac, char **av, char **env)
 		exit(1);
 	}
 	parent_process(av, pipefd, env);
-	return (0);
 }
