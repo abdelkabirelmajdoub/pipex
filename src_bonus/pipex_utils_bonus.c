@@ -6,7 +6,7 @@
 /*   By: ael-majd <ael-majd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/21 11:16:15 by ael-majd          #+#    #+#             */
-/*   Updated: 2025/01/23 16:44:26 by ael-majd         ###   ########.fr       */
+/*   Updated: 2025/01/25 16:26:41 by ael-majd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,10 @@ char	*get_path(char *cmd, char **env)
 		exec = ft_strjoin(path_part, cmd);
 		free(path_part);
 		if (access(exec, F_OK | X_OK) == 0)
+		{
+			free_paths(secure_paths);
 			return (exec);
+		}
 		free(exec);
 		i++;
 	}

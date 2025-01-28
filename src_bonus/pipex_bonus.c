@@ -6,7 +6,7 @@
 /*   By: ael-majd <ael-majd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 12:30:38 by ael-majd          #+#    #+#             */
-/*   Updated: 2025/01/27 13:04:51 by ael-majd         ###   ########.fr       */
+/*   Updated: 2025/01/28 13:48:01 by ael-majd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,16 +108,16 @@ int	main(int ac, char **av, char **env)
 	{
 		check_error(ac, 2);
 		i = 3;
-		out = open(av[ac - 1], O_RDWR | O_CREAT | O_APPEND, 0777);
+		out = fd_here_doc(av[ac - 1]);
 		here_doc(av[2]);
 	}
 	else 
 	{
 		i = 2;
-		in = open(av[1], O_RDONLY);
+		in = file_open(av[1], 0);
 		dup2(in, STDIN_FILENO);
 		close(in);
-		out = open(av[ac - 1], O_RDWR | O_CREAT | O_TRUNC, 0777);
+		out = file_open(av[ac - 1], 1);
 	}
 	while (i < ac - 2)
 		child_process(av[i++], env);
