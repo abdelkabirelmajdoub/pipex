@@ -10,24 +10,40 @@ GNL = 	src_bonus/GNL/get_next_line_bonus.c \
 		src_bonus/GNL/get_next_line_utils_bonus.c
 
 LIBFT = libft/libft.a
-
 NAME = pipex
+
+RED    = \033[0;31m
+GREEN  = \033[0;32m
+YELLOW = \033[0;33m
+BLUE   = \033[0;34m
+NC     = \033[0m 
 
 all:$(NAME)
 
 $(NAME): $(SRC)
-	make all -C libft
+	@echo  "${YELLOW}Compiling files ...${NC}"
+	@echo  "${BLUE}Waiting${NC}"
+	@make all -C libft
 	$(CC) $(CFLAGS) $(SRC) $(LIBFT) -o $(NAME)
+	@echo  "${GREEN}Compilation finished successfully!${NC}"
 
 clean:
-	make clean -C libft
+	@echo "${YELLOW} Cleaning .o files ...${NC}"
+	@make clean -C libft
+	@sleep 1
+	@echo "${RED} Cleaned up!${NC}"
 
 fclean: clean
-	make fclean -C libft
-	rm -rf $(NAME) 
+	@echo "${YELLOW} Cleaning .o and ${NAME} files ...${NC}"
+	@make fclean -C libft
+	@rm -rf $(NAME)
+	@echo "${RED} Cleaned up!${NC}"
 
 re : fclean all
 
 bonus: $(SRCB)
-	make all -C libft
+	@echo  "${YELLOW}Compiling files [Bonus]...${NC}"
+	@echo  "${BLUE}Waiting${NC}"
+	@make all -C libft
 	$(CC) $(CFLAGS) $(SRCB) $(LIBFT) $(GNL) -o $(NAME)
+	@echo  "${GREEN}Compilation finished successfully! [Bonus]${NC}"

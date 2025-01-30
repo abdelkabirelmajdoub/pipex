@@ -6,7 +6,7 @@
 /*   By: ael-majd <ael-majd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/21 11:16:15 by ael-majd          #+#    #+#             */
-/*   Updated: 2025/01/23 12:06:53 by ael-majd         ###   ########.fr       */
+/*   Updated: 2025/01/30 14:47:41 by ael-majd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,10 +61,27 @@ char	*get_path(char *cmd, char **env)
 		exec = ft_strjoin(path_part, cmd);
 		free(path_part);
 		if (access(exec, F_OK | X_OK) == 0)
+		{
+			free_paths(secure_paths);
 			return (exec);
+		}
 		free(exec);
 		i++;
 	}
 	free_paths(secure_paths);
 	return (cmd);
+}
+
+void	error(int n)
+{
+	if (n == 3)
+		ft_putstr_fd("fork error", 2);
+	else if (n == 5)
+	{
+		ft_putstr_fd("Bad arguments:\n./pipex infile cmd cmd outfile\n", 2);
+		exit(1);
+	}
+	else 
+		perror("Pipe Error");
+	exit(EXIT_FAILURE);
 }

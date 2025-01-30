@@ -6,7 +6,7 @@
 /*   By: ael-majd <ael-majd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/21 16:28:07 by ael-majd          #+#    #+#             */
-/*   Updated: 2025/01/28 13:47:35 by ael-majd         ###   ########.fr       */
+/*   Updated: 2025/01/30 14:40:47 by ael-majd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,4 +26,6 @@ void	error(int n);
 void	check_error(int ac, int n);
 int		file_open(char *file, int std);
 int		fd_here_doc(char *file);
+void	change_fd(int pfd, int place);
+int		file_open(char *file, int std);
 #endif

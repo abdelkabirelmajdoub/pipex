@@ -6,7 +6,7 @@
 /*   By: ael-majd <ael-majd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/21 16:41:25 by ael-majd          #+#    #+#             */
-/*   Updated: 2025/01/27 12:49:39 by ael-majd         ###   ########.fr       */
+/*   Updated: 2025/01/30 14:51:11 by ael-majd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,25 +88,16 @@ void	parent_process(char **av, int *pipefd, char **env)
 int	main(int ac, char **av, char **env)
 {
 	int	pipefd[2];
-	int	pid;
+	int	pid1;
 
 	if (ac != 5)
-	{
-		ft_putstr_fd("Bad arguments:\n./pipex infile cmd cmd outfile\n", 2);
-		exit(1);
-	}
+		error(5);
 	if (pipe(pipefd) == -1)
-	{
-		perror("Pipe error");
-		exit(1);
-	}
-	pid = fork();
-	if (pid == 0)
+		error(0);
+	pid1 = fork();
+	if (pid1 == 0)
 		child_process(av, pipefd, env);
-	else if (pid == -1)
-	{
-		perror("fork error");
-		exit(1);
-	}
-	parent_process(av, pipefd, env);
+	else if (pid1 == -1)
+		error(3);
+	parent_process(av, pipefd, env); 
 }

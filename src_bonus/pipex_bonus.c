@@ -6,7 +6,7 @@
 /*   By: ael-majd <ael-majd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 12:30:38 by ael-majd          #+#    #+#             */
-/*   Updated: 2025/01/28 13:48:01 by ael-majd         ###   ########.fr       */
+/*   Updated: 2025/01/30 14:42:05 by ael-majd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,14 +42,14 @@ void	child_process(char *cmd, char **env)
 	if (pid == 0)
 	{
 		close(fdpipe[0]);
-		dup2(fdpipe[1], STDOUT_FILENO);
+		change_fd(fdpipe[1], 1);
 		close(fdpipe[1]);
 		exec_cmd(cmd, env);
 	}
 	else
 	{
 		close(fdpipe[1]);
-		dup2(fdpipe[0], STDIN_FILENO);
+		change_fd(fdpipe[0], STDIN_FILENO);
 		close(fdpipe[0]);
 	}
 }
@@ -92,7 +92,7 @@ void	here_doc(char *limitter)
 	{
 		waitpid(pid, NULL, 0);
 		close(fdpipe[1]);
-		dup2(fdpipe[0], STDIN_FILENO);
+		change_fd(fdpipe[0], STDIN_FILENO);
 		close(fdpipe[0]);
 	}
 }
@@ -115,13 +115,13 @@ int	main(int ac, char **av, char **env)
 	{
 		i = 2;
 		in = file_open(av[1], 0);
-		dup2(in, STDIN_FILENO);
+		change_fd(in, STDIN_FILENO);
 		close(in);
 		out = file_open(av[ac - 1], 1);
 	}
 	while (i < ac - 2)
 		child_process(av[i++], env);
-	dup2(out, STDOUT_FILENO);
+	change_fd(out, STDOUT_FILENO);
 	close(out);
 	exec_cmd(av[ac - 2], env);
 }
