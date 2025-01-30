@@ -99,5 +99,6 @@ int	main(int ac, char **av, char **env)
 		child_process(av, pipefd, env);
 	else if (pid1 == -1)
 		error(3);
+	waitpid(pid1, NULL, 0);
 	parent_process(av, pipefd, env); 
 }
