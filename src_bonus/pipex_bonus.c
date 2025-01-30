@@ -48,6 +48,7 @@ void	child_process(char *cmd, char **env)
 	}
 	else
 	{
+		waitpid(pid, NULL, 0);
 		close(fdpipe[1]);
 		change_fd(fdpipe[0], STDIN_FILENO);
 		close(fdpipe[0]);
