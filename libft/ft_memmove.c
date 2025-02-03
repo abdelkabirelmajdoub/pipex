@@ -6,7 +6,7 @@
 /*   By: ael-majd <ael-majd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/22 14:53:45 by ael-majd          #+#    #+#             */
-/*   Updated: 2024/11/17 10:56:28 by ael-majd         ###   ########.fr       */
+/*   Updated: 2025/01/30 18:37:40 by ael-majd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,13 +16,11 @@ void	*ft_memmove(void *dest, const void *src, size_t n)
 {
 	unsigned char			*d;
 	const unsigned char		*s;
-	size_t					i;
 
 	if (dest == src)
 		return (dest);
 	d = dest;
 	s = src;
-	i = 0;
 	if (d < s)
 		ft_memcpy(dest, src, n);
 	else

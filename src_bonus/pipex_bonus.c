@@ -6,7 +6,7 @@
 /*   By: ael-majd <ael-majd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 12:30:38 by ael-majd          #+#    #+#             */
-/*   Updated: 2025/01/30 14:42:05 by ael-majd         ###   ########.fr       */
+/*   Updated: 2025/02/01 13:45:37 by ael-majd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,9 @@ void	exec_cmd(char *cmd, char **env)
 	char	**full_cmd;
 	char	*path;
 
-	full_cmd = ft_split(cmd, ' ');
+	full_cmd = parse_args(cmd);
+	if (!full_cmd)
+		exit(1);
 	path = get_path(full_cmd[0], env);
 	if (execve(path, full_cmd, env) == -1)
 	{

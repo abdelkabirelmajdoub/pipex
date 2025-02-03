@@ -1,10 +1,11 @@
 CC = gcc
-CFLAGS = -Wall -Wextra -Werror 
-SRC = 	src/pipex.c  src/pipex_utils.c 
+CFLAGS = -Wall -Wextra -Werror
+SRC = 	src/pipex.c  src/pipex_utils.c src/parse.c
 
 SRCB = 	src_bonus/pipex_bonus.c  \
 		src_bonus/pipex_utils_bonus.c \
-		src_bonus/open_fd_bonus.c
+		src_bonus/open_fd_bonus.c \
+		src_bonus/parse_bonus.c
 
 GNL = 	src_bonus/GNL/get_next_line_bonus.c \
 		src_bonus/GNL/get_next_line_utils_bonus.c
