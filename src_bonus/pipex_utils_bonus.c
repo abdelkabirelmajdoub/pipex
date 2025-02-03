@@ -53,6 +53,8 @@ char	*get_path(char *cmd, char **env)
 	char	**secure_paths;
 	int		i;
 
+	if (!env || !*env)
+		return (NULL);
 	secure_paths = ft_split(my_getenv("PATH", env), ':');
 	i = 0;
 	while (secure_paths[i])
