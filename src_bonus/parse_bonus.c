@@ -6,7 +6,7 @@
 /*   By: ael-majd <ael-majd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/01 13:09:53 by ael-majd          #+#    #+#             */
-/*   Updated: 2025/02/01 13:57:11 by ael-majd         ###   ########.fr       */
+/*   Updated: 2025/02/20 12:56:20 by ael-majd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,4 +62,19 @@ char	**parse_args(char *cmd)
 	}
 	args[count] = NULL;
 	return (args);
+}
+
+void	last_cmd(char **av, char **env, int ac, int out)
+{
+	int	pid;
+
+	pid = fork();
+	if (pid == 0)
+	{
+		change_fd(out, STDOUT_FILENO);
+		close(out);
+		exec_cmd(av[ac - 2], env);
+	}
+	else if (pid == -1)
+		error(3);
 }

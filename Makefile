@@ -1,16 +1,14 @@
-CC = gcc
+CC = cc
 CFLAGS = -Wall -Wextra -Werror
 SRC = 	src/pipex.c  src/pipex_utils.c src/parse.c
 
-SRCB = 	src_bonus/pipex_bonus.c  \
-		src_bonus/pipex_utils_bonus.c \
-		src_bonus/open_fd_bonus.c \
-		src_bonus/parse_bonus.c
 
 GNL = 	src_bonus/GNL/get_next_line_bonus.c \
 		src_bonus/GNL/get_next_line_utils_bonus.c
 
 LIBFT = libft/libft.a
+OBJ = $(SRC:.c=.o)
+
 NAME = pipex
 
 RED    = \033[0;31m
@@ -21,17 +19,18 @@ NC     = \033[0m
 
 all:$(NAME)
 
-$(NAME): $(SRC)
+$(NAME): $(OBJ)
 	@echo  "${YELLOW}Compiling files ...${NC}"
 	@echo  "${BLUE}Waiting${NC}"
 	@make all -C libft
-	$(CC) $(CFLAGS) $(SRC) $(LIBFT) -o $(NAME)
+	$(CC) $(CFLAGS) $(OBJ) $(LIBFT) -o $(NAME)
 	@echo  "${GREEN}Compilation finished successfully!${NC}"
 
 clean:
 	@echo "${YELLOW} Cleaning .o files ...${NC}"
 	@make clean -C libft
-	@sleep 1
+	@make clean -C src_bonus
+	@rm -rf $(OBJ)
 	@echo "${RED} Cleaned up!${NC}"
 
 fclean: clean
@@ -43,8 +42,4 @@ fclean: clean
 re : fclean all
 
 bonus: $(SRCB)
-	@echo  "${YELLOW}Compiling files [Bonus]...${NC}"
-	@echo  "${BLUE}Waiting${NC}"
-	@make all -C libft
-	$(CC) $(CFLAGS) $(SRCB) $(LIBFT) $(GNL) -o $(NAME)
-	@echo  "${GREEN}Compilation finished successfully! [Bonus]${NC}"
+	make all -C src_bonus

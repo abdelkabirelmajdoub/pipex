@@ -6,13 +6,13 @@
 /*   By: ael-majd <ael-majd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 09:56:20 by ael-majd          #+#    #+#             */
-/*   Updated: 2025/01/22 09:53:31 by ael-majd         ###   ########.fr       */
+/*   Updated: 2025/02/20 13:04:57 by ael-majd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line_bonus.h"
 
-size_t	ft_strlen(const char *s)
+size_t	ft_strlent(const char *s)
 {
 	int	i;
 
@@ -26,7 +26,7 @@ size_t	ft_strlen(const char *s)
 	return (i);
 }
 
-char	*ft_strdup(const char *s)
+char	*ft_strdupt(const char *s)
 {
 	char	*d;
 	int		i;
@@ -34,7 +34,7 @@ char	*ft_strdup(const char *s)
 
 	if (!s)
 		return (NULL);
-	len = ft_strlen(s) + 1;
+	len = ft_strlent(s) + 1;
 	d = malloc(sizeof(char) * len);
 	if (!d)
 		return (NULL);
@@ -56,7 +56,7 @@ char	*ft_strjoint(char *s1, char *s2)
 
 	if (!s1 && !s2)
 		return (NULL);
-	join = malloc(ft_strlen(s1) + ft_strlen(s2) + 1);
+	join = malloc(ft_strlent(s1) + ft_strlent(s2) + 1);
 	if (!join)
 		return (NULL);
 	i = 0;

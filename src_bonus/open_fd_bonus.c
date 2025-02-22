@@ -6,7 +6,7 @@
 /*   By: ael-majd <ael-majd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 13:29:48 by ael-majd          #+#    #+#             */
-/*   Updated: 2025/01/30 15:01:13 by ael-majd         ###   ########.fr       */
+/*   Updated: 2025/02/20 13:39:11 by ael-majd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,4 +68,18 @@ void	change_fd(int pfd, int place)
 			exit(1);
 		}
 	}
+}
+
+void	wait_mychildren(void)
+{
+	while (wait(NULL) != -1)
+		;
+}
+
+void	setup(int *i, int *in, char *filename)
+{
+	*i = 2;
+	*in = file_open(filename, STDIN_FILENO);
+	change_fd(*in, STDIN_FILENO);
+	close(*in);
 }

@@ -6,7 +6,7 @@
 /*   By: ael-majd <ael-majd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/21 16:41:25 by ael-majd          #+#    #+#             */
-/*   Updated: 2025/02/01 13:58:19 by ael-majd         ###   ########.fr       */
+/*   Updated: 2025/02/20 12:30:01 by ael-majd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,10 @@ int	main(int ac, char **av, char **env)
 {
 	int	pipefd[2];
 	int	pid1;
+	int	pid2;
 
+	if (!env || !*env)
+		return (1);
 	if (ac != 5)
 		error(5);
 	if (pipe(pipefd) == -1)
@@ -99,6 +102,13 @@ int	main(int ac, char **av, char **env)
 		child_process(av, pipefd, env);
 	else if (pid1 == -1)
 		error(3);
+	pid2 = fork();
+	if (pid2 == 0)
+		parent_process(av, pipefd, env);
+	else if (pid2 == -1)
+		error(3);
+	close(pipefd[1]);
+	close(pipefd[0]);
 	waitpid(pid1, NULL, 0);
-	parent_process(av, pipefd, env);
+	waitpid(pid2, NULL, 0);
 }

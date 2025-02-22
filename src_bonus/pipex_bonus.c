@@ -6,7 +6,7 @@
 /*   By: ael-majd <ael-majd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 12:30:38 by ael-majd          #+#    #+#             */
-/*   Updated: 2025/02/01 13:45:37 by ael-majd         ###   ########.fr       */
+/*   Updated: 2025/02/20 13:40:45 by ael-majd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,6 @@ void	child_process(char *cmd, char **env)
 	}
 	else
 	{
-		waitpid(pid, NULL, 0);
 		close(fdpipe[1]);
 		change_fd(fdpipe[0], STDIN_FILENO);
 		close(fdpipe[0]);
@@ -106,8 +105,10 @@ int	main(int ac, char **av, char **env)
 	int	out;
 	int	i;
 
+	if (!env || !*env)
+		return (1);
 	check_error(ac, 1);
-	if (ft_strncmp(av[1], "here_doc", 8) == 0)
+	if (ft_strncmp(av[1], "here_doc", 8) == 0 && ft_strlen(av[1]) == 8)
 	{
 		check_error(ac, 2);
 		i = 3;
@@ -116,15 +117,13 @@ int	main(int ac, char **av, char **env)
 	}
 	else 
 	{
-		i = 2;
-		in = file_open(av[1], 0);
-		change_fd(in, STDIN_FILENO);
-		close(in);
+		setup(&i, &in, av[1]);
 		out = file_open(av[ac - 1], 1);
 	}
 	while (i < ac - 2)
 		child_process(av[i++], env);
-	change_fd(out, STDOUT_FILENO);
+	last_cmd(av, env, ac, out);
+	close(0);
 	close(out);
-	exec_cmd(av[ac - 2], env);
+	wait_mychildren();
 }

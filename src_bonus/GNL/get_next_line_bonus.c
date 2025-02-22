@@ -6,7 +6,7 @@
 /*   By: ael-majd <ael-majd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 09:56:28 by ael-majd          #+#    #+#             */
-/*   Updated: 2025/01/22 09:53:42 by ael-majd         ###   ########.fr       */
+/*   Updated: 2025/02/20 12:41:08 by ael-majd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ char	*getting_line(char **rest)
 
 	new_index = find_newline(*rest);
 	if (new_index < 0)
-		return (ft_strdup(*rest));
+		return (ft_strdupt(*rest));
 	line = malloc(new_index + 2);
 	if (!line)
 	{
@@ -95,7 +95,7 @@ char	*update_rest(char **rest)
 		*rest = NULL;
 		return (NULL);
 	}
-	new_rest = ft_strdup(*rest + new_index + 1);
+	new_rest = ft_strdupt(*rest + new_index + 1);
 	if (!new_rest)
 	{
 		free(*rest);
