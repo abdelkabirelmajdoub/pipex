@@ -101,19 +101,17 @@ void	here_doc(char *limitter)
 
 int	main(int ac, char **av, char **env)
 {
-	int	in;
-	int	out;
-	int	i;
-
+	int (in), (out), (i), (save);
 	if (!env || !*env)
 		return (1);
 	check_error(ac, 1);
+	save = dup(0);
 	if (ft_strncmp(av[1], "here_doc", 8) == 0 && ft_strlen(av[1]) == 8)
 	{
 		check_error(ac, 2);
 		i = 3;
-		out = fd_here_doc(av[ac - 1]);
 		here_doc(av[2]);
+		out = fd_here_doc(av[ac - 1]);
 	}
 	else 
 	{
@@ -123,7 +121,8 @@ int	main(int ac, char **av, char **env)
 	while (i < ac - 2)
 		child_process(av[i++], env);
 	last_cmd(av, env, ac, out);
-	close(0);
+	dup2(save, 0);
+	close(save);
 	close(out);
 	wait_mychildren();
 }
